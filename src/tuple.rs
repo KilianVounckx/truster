@@ -1,3 +1,5 @@
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
+
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub struct Tuple {
 	x: f64,
@@ -37,6 +39,84 @@ impl Tuple {
 
 	pub fn is_vector(&self) -> bool {
 		self.w == 0.0
+	}
+}
+
+impl Add for Tuple {
+	type Output = Self;
+
+	fn add(self, rhs: Self) -> Self {
+		Self::new(
+			self.x + rhs.x,
+			self.y + rhs.y,
+			self.z + rhs.z,
+			self.w + rhs.w,
+		)
+	}
+}
+
+impl AddAssign for Tuple {
+	fn add_assign(&mut self, rhs: Self) {
+		self.x += rhs.x;
+		self.y += rhs.y;
+		self.z += rhs.z;
+		self.w += rhs.w;
+	}
+}
+
+impl Sub for Tuple {
+	type Output = Self;
+
+	fn sub(self, rhs: Self) -> Self {
+		Self::new(
+			self.x - rhs.x,
+			self.y - rhs.y,
+			self.z - rhs.z,
+			self.w - rhs.w,
+		)
+	}
+}
+
+impl SubAssign for Tuple {
+	fn sub_assign(&mut self, rhs: Self) {
+		self.x -= rhs.x;
+		self.y -= rhs.y;
+		self.z -= rhs.z;
+		self.w -= rhs.w;
+	}
+}
+
+impl Mul<f64> for Tuple {
+	type Output = Self;
+
+	fn mul(self, rhs: f64) -> Self {
+		Self::new(self.x * rhs, self.y * rhs, self.z * rhs, self.w * rhs)
+	}
+}
+
+impl MulAssign<f64> for Tuple {
+	fn mul_assign(&mut self, rhs: f64) {
+		self.x *= rhs;
+		self.y *= rhs;
+		self.z *= rhs;
+		self.w *= rhs;
+	}
+}
+
+impl Div<f64> for Tuple {
+	type Output = Self;
+
+	fn div(self, rhs: f64) -> Self {
+		Self::new(self.x / rhs, self.y / rhs, self.z / rhs, self.w / rhs)
+	}
+}
+
+impl DivAssign<f64> for Tuple {
+	fn div_assign(&mut self, rhs: f64) {
+		self.x /= rhs;
+		self.y /= rhs;
+		self.z /= rhs;
+		self.w /= rhs;
 	}
 }
 
