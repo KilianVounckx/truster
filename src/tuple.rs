@@ -133,6 +133,7 @@
 //! assert_eq!(v, Tuple::vector(1.0 / sqrt14, 2.0 / sqrt14, 3.0 / sqrt14));
 //! ```
 
+use std::fmt::Display;
 use std::ops::{
 	Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Neg, Sub, SubAssign,
 };
@@ -224,6 +225,18 @@ impl Tuple {
 	/// module's documentation for examples. Only works for vectors, not points.
 	pub fn normalize(&mut self) {
 		*self /= self.norm();
+	}
+}
+
+impl Display for Tuple {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+		if self.is_point() {
+			write!(f, "P({}, {}, {})", self.x, self.y, self.z)
+		} else if self.is_vector() {
+			write!(f, "V[{} {} {}]", self.x, self.y, self.z)
+		} else {
+			write!(f, "[{} {} {} ({})]", self.x, self.y, self.z, self.w)
+		}
 	}
 }
 

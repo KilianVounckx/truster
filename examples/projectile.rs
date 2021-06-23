@@ -29,7 +29,7 @@ fn main() {
 	};
 
 	while p.position.y() > 0.0 {
-		println!("{:?}", p.position);
+		println!("{}", p.position);
 		p.tick(&e);
 	}
 }
