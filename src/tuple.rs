@@ -229,7 +229,7 @@ impl Tuple {
 }
 
 impl Display for Tuple {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+	fn fmt(&self, f: &mut std::fmt::Formatter) -> Result<(), std::fmt::Error> {
 		if self.is_point() {
 			write!(f, "P({}, {}, {})", self.x, self.y, self.z)
 		} else if self.is_vector() {
@@ -243,8 +243,8 @@ impl Display for Tuple {
 impl Add for Tuple {
 	type Output = Self;
 
-	fn add(self, rhs: Self) -> Self {
-		Self::new(
+	fn add(self, rhs: Self) -> Self::Output {
+		Self::Output::new(
 			self.x + rhs.x,
 			self.y + rhs.y,
 			self.z + rhs.z,
@@ -265,8 +265,8 @@ impl AddAssign for Tuple {
 impl Sub for Tuple {
 	type Output = Self;
 
-	fn sub(self, rhs: Self) -> Self {
-		Self::new(
+	fn sub(self, rhs: Self) -> Self::Output {
+		Self::Output::new(
 			self.x - rhs.x,
 			self.y - rhs.y,
 			self.z - rhs.z,
@@ -287,15 +287,15 @@ impl SubAssign for Tuple {
 impl Neg for Tuple {
 	type Output = Self;
 	fn neg(self) -> Self::Output {
-		Self::new(-self.x, -self.y, -self.z, -self.w)
+		Self::Output::new(-self.x, -self.y, -self.z, -self.w)
 	}
 }
 
 impl Mul<f64> for Tuple {
 	type Output = Self;
 
-	fn mul(self, rhs: f64) -> Self {
-		Self::new(self.x * rhs, self.y * rhs, self.z * rhs, self.w * rhs)
+	fn mul(self, rhs: f64) -> Self::Output {
+		Self::Output::new(self.x * rhs, self.y * rhs, self.z * rhs, self.w * rhs)
 	}
 }
 
@@ -311,8 +311,8 @@ impl MulAssign<f64> for Tuple {
 impl Div<f64> for Tuple {
 	type Output = Self;
 
-	fn div(self, rhs: f64) -> Self {
-		Self::new(self.x / rhs, self.y / rhs, self.z / rhs, self.w / rhs)
+	fn div(self, rhs: f64) -> Self::Output {
+		Self::Output::new(self.x / rhs, self.y / rhs, self.z / rhs, self.w / rhs)
 	}
 }
 
