@@ -139,7 +139,7 @@ use std::ops::{
 };
 
 /// Tuple represents a 3D tuple. See the module's documentation for more information.
-#[derive(Debug, PartialEq, Clone, Copy)]
+#[derive(Debug, PartialEq, Clone, Copy, Default)]
 pub struct Tuple {
 	x: f64,
 	y: f64,

@@ -67,7 +67,7 @@ use std::fmt::Display;
 use std::ops::{Add, AddAssign, Index, IndexMut, Mul, MulAssign, Sub, SubAssign};
 
 /// Represents an RGB color. See the module's documentation for more info.
-#[derive(Debug, PartialEq, Clone, Copy)]
+#[derive(Debug, PartialEq, Clone, Copy, Default)]
 pub struct Color {
 	r: f64,
 	g: f64,
