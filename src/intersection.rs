@@ -82,8 +82,8 @@ pub trait Hit<T = Intersection> {
 	fn hit(&self) -> Option<&T>;
 }
 
-/// Implement [Hit] to get the first intersection which is a hit. If there are no hits, `None` is
-/// returned.
+/// Implement [Hit] to get the first intersection which is a hit. The list should be sorted. If
+/// there are no hits, `None` is returned.
 impl Hit for Vec<Intersection> {
 	fn hit(&self) -> Option<&Intersection> {
 		for i in self.iter() {
