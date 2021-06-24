@@ -3,6 +3,7 @@
 use std::rc::Rc;
 
 use crate::intersection::Intersection;
+use crate::material::Material;
 use crate::matrix::Matrix;
 use crate::ray::Ray;
 use crate::tuple::Tuple;
@@ -12,11 +13,12 @@ use crate::tuple::Tuple;
 pub struct Sphere {
 	transform: Matrix,
 	transform_inverse: Matrix,
+	material: Material,
 }
 
 impl Sphere {
 	/// Returns a new sphere with radius 1, centered at the origin.
-	/// Use [Sphere::set_transform] to transform it.
+	/// Use [Sphere::set_transform] to transform it. Give it a material with [Sphere::set_material].
 	pub fn new() -> Self {
 		Self::default()
 	}
@@ -240,5 +242,15 @@ impl Sphere {
 	/// Returns `self`'s transform's inverse.
 	pub fn transform_inverse(&self) -> &Matrix {
 		&self.transform_inverse
+	}
+
+	/// Returns `self`'s material.
+	pub fn material(&self) -> &Material {
+		&self.material
+	}
+
+	/// Sets `self`'s material to be `material`.
+	pub fn set_material(&mut self, material: Material) {
+		self.material = material;
 	}
 }
