@@ -333,6 +333,70 @@ impl Matrix {
 		])
 	}
 
+	/// Returns a new transformation matrix which can be used for camera's. If a camera looks from
+	/// `from` at `at, where `up` is approximately pointing up, the resulting matrix will be it's
+	/// transformation matrix.
+	///
+	/// # Examples
+	///
+	/// The transformation matrix for the default orientation.
+	/// ```
+	/// # use rtc::matrix::Matrix;
+	/// use rtc::tuple::Tuple;
+	/// let from = Tuple::point(0.0, 0.0, 0.0);
+	/// let at = Tuple::point(0.0, 0.0, -1.0);
+	/// let up = Tuple::vector(0.0, 1.0, 0.0);
+	/// let t = Matrix::view_transform(from, at, up);
+	/// assert_eq!(t, Matrix::eye());
+	/// ```
+	///
+	/// A view transformation matrix looking in the positive z direction.
+	/// ```
+	/// # use rtc::matrix::Matrix;
+	/// use rtc::tuple::Tuple;
+	/// let from = Tuple::point(0.0, 0.0, 0.0);
+	/// let at = Tuple::point(0.0, 0.0, 1.0);
+	/// let up = Tuple::vector(0.0, 1.0, 0.0);
+	/// let t = Matrix::view_transform(from, at, up);
+	/// assert_eq!(t, Matrix::scaling(-1.0, 1.0, -1.0));
+	/// ```
+	///
+	/// The view transformation moves the world.
+	/// ```
+	/// # use rtc::matrix::Matrix;
+	/// use rtc::tuple::Tuple;
+	/// let from = Tuple::point(0.0, 0.0, 8.0);
+	/// let to = Tuple::point(0.0, 0.0, 0.0);
+	/// let up = Tuple::vector(0.0, 1.0, 0.0);
+	/// let t = Matrix::view_transform(from, to, up);
+	/// assert_eq!(t, Matrix::translation(0.0, 0.0, -8.0));
+	/// ```
+	pub fn view_transform(from: Tuple, at: Tuple, up: Tuple) -> Self {
+		let forward = (at - from).normalized();
+		let up = up.normalized();
+		let left = forward.cross(up);
+		let up = left.cross(forward);
+		let orientation = Self::new(&[
+			left.x(),
+			left.y(),
+			left.z(),
+			0.0,
+			up.x(),
+			up.y(),
+			up.z(),
+			0.0,
+			-forward.x(),
+			-forward.y(),
+			-forward.z(),
+			0.0,
+			0.0,
+			0.0,
+			0.0,
+			1.0,
+		]);
+		orientation * &Matrix::translation(-from.x(), -from.y(), -from.z())
+	}
+
 	/// Returns the transpose of `self`.
 	pub fn transpose(&self) -> Self {
 		let mut res = Self::default();
