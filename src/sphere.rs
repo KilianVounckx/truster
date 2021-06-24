@@ -35,8 +35,8 @@ impl Sphere {
 	/// let sphere = Sphere::new();
 	/// let intersections = sphere.intersect(&ray);
 	/// assert_eq!(intersections.len(), 2);
-	/// assert_eq!(intersections[0], 4.0);
-	/// assert_eq!(intersections[1], 6.0);
+	/// assert_eq!(intersections[0].t(), 4.0);
+	/// assert_eq!(intersections[1].t(), 6.0);
 	/// ```
 	///
 	/// A ray intersects a sphere at a tangent.
@@ -49,8 +49,8 @@ impl Sphere {
 	/// let sphere = Sphere::new();
 	/// let intersections = sphere.intersect(&ray);
 	/// assert_eq!(intersections.len(), 2);
-	/// assert_eq!(intersections[0], 5.0);
-	/// assert_eq!(intersections[1], 5.0);
+	/// assert_eq!(intersections[0].t(), 5.0);
+	/// assert_eq!(intersections[1].t(), 5.0);
 	/// ```
 	///
 	/// A ray misses a sphere.
@@ -75,8 +75,8 @@ impl Sphere {
 	/// let sphere = Sphere::new();
 	/// let intersections = sphere.intersect(&ray);
 	/// assert_eq!(intersections.len(), 2);
-	/// assert_eq!(intersections[0], -1.0);
-	/// assert_eq!(intersections[1], 1.0);
+	/// assert_eq!(intersections[0].t(), -1.0);
+	/// assert_eq!(intersections[1].t(), 1.0);
 	/// ```
 	///
 	/// A ray is behind a sphere.
@@ -89,8 +89,8 @@ impl Sphere {
 	/// let sphere = Sphere::new();
 	/// let intersections = sphere.intersect(&ray);
 	/// assert_eq!(intersections.len(), 2);
-	/// assert_eq!(intersections[0], -6.0);
-	/// assert_eq!(intersections[1], -4.0);
+	/// assert_eq!(intersections[0].t(), -6.0);
+	/// assert_eq!(intersections[1].t(), -4.0);
 	/// ```
 	///
 	/// Intersecting a scaled sphere with a ray.
@@ -105,8 +105,8 @@ impl Sphere {
 	/// sphere.set_transform(Matrix::scaling(2.0, 2.0, 2.0));
 	/// let intersections = sphere.intersect(&ray);
 	/// assert_eq!(intersections.len(), 2);
-	/// assert_eq!(intersections[0], 3.0);
-	/// assert_eq!(intersections[1], 7.0);
+	/// assert_eq!(intersections[0].t(), 3.0);
+	/// assert_eq!(intersections[1].t(), 7.0);
 	/// ```
 	///
 	/// Intersecting a translated sphere with a ray.
