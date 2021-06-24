@@ -78,7 +78,7 @@
 //! ]);
 //!
 //! let p = Tuple::point(1.0, 2.0, 3.0);
-//! assert_eq!(m * p, Tuple::point(18.0, 24.0, 33.0));
+//! assert_eq!(&m * p, Tuple::point(18.0, 24.0, 33.0));
 //! ```
 //!
 //! Take the transpose of a matrix with [Matrix::transpose]:
@@ -134,12 +134,12 @@
 //!
 //! let t = Matrix::translation(5.0, -3.0, 2.0);
 //! let p = Tuple::point(-3.0, 4.0, 5.0);
-//! assert_eq!(t * p, Tuple::point(2.0, 1.0, 7.0));
+//! assert_eq!(&t * p, Tuple::point(2.0, 1.0, 7.0));
 //!
 //! // vectors stay unchanged.
 //! let t = Matrix::translation(5.0, -3.0, 2.0);
 //! let v = Tuple::vector(-3.0, 4.0, 5.0);
-//! assert_eq!(t * v, v);
+//! assert_eq!(&t * v, v);
 //! ```
 //!
 //! - Scaling
@@ -149,7 +149,7 @@
 //!
 //! let t = Matrix::scaling(2.0, 3.0, 4.0);
 //! let p = Tuple::point(-4.0, 6.0, 8.0);
-//! assert_eq!(t * p, Tuple::point(-8.0, 18.0, 32.0));
+//! assert_eq!(&t * p, Tuple::point(-8.0, 18.0, 32.0));
 //! ```
 //!
 //! - Rotation around X axis.
@@ -161,7 +161,7 @@
 //!
 //! let t = Matrix::rotation_x(PI / 2.0);
 //! let p = Tuple::point(0.0, 1.0, 0.0);
-//! // t * p == Tuple::point(0.0, 0.0, 1.0)  // approximately
+//! // &t * p == Tuple::point(0.0, 0.0, 1.0)  // approximately
 //! ```
 //!
 //! - Rotation around Y axis.
@@ -173,7 +173,7 @@
 //!
 //! let t = Matrix::rotation_y(PI / 2.0);
 //! let p = Tuple::point(0.0, 0.0, 1.0);
-//! // t * p == Tuple::point(1.0, 0.0, 0.0)  // approximately
+//! // &t * p == Tuple::point(1.0, 0.0, 0.0)  // approximately
 //! ```
 //!
 //! - Rotation around Z axis.
@@ -185,7 +185,7 @@
 //!
 //! let t = Matrix::rotation_z(PI / 2.0);
 //! let p = Tuple::point(0.0, 1.0, 0.0);
-//! // t * p == Tuple::point(-1.0, 0.0, 0.0)  // approximately
+//! // &t * p == Tuple::point(-1.0, 0.0, 0.0)  // approximately
 //! ```
 //!
 //! - Shearing
@@ -195,7 +195,7 @@
 //!
 //! let t = Matrix::shearing(0.0, 1.0, 0.0, 0.0, 0.0, 0.0);
 //! let p = Tuple::point(2.0, 3.0, 4.0);
-//! // t * p == Tuple::point(-6.0, 3.0, 4.0)  // approximately
+//! assert_eq!(&t * p, Tuple::point(6.0, 3.0, 4.0));
 //! ```
 //!
 //! Transformations can be chained together by multiplying:
@@ -210,13 +210,14 @@
 //! let a = Matrix::rotation_x(PI / 2.0);
 //! let b = Matrix::scaling(5.0, 5.0, 5.0);
 //! let c = Matrix::translation(10.0, 5.0, 7.0);
-//! let t = c.clone() * &b * &a;
 //!
-//! let p2 = a*p;
-//! let p3 = b*p2;
-//! let p4 = c*p3;
+//! let p2 = &a*p;
+//! let p3 = &b*p2;
+//! let p4 = &c*p3;
 //!
-//! assert_eq!(t*p, p4);
+//! let t = c * &b * &a;
+//!
+//! assert_eq!(&t*p, p4);
 //! ```
 
 use std::fmt::{Display, Formatter, Result};
@@ -568,7 +569,7 @@ impl Mul<&Self> for Matrix {
 	}
 }
 
-impl Mul<Tuple> for Matrix {
+impl Mul<Tuple> for &Matrix {
 	type Output = Tuple;
 
 	fn mul(self, rhs: Tuple) -> Tuple {
