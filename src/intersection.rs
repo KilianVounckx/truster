@@ -1,11 +1,14 @@
-//! Holds the [Intersection] struct.
+//! Holds the [Intersection] struct, and the [HitRecord] struct, as well as some helpful trait
+//! implementations.
 
 use std::cmp::Ordering::{self, Equal, Greater, Less};
 use std::fmt::{Debug, Error, Formatter};
 use std::rc::Rc;
 use std::sync::atomic::{AtomicUsize, Ordering as AtomicOrdering};
 
+use crate::ray::Ray;
 use crate::sphere::Sphere;
+use crate::tuple::Tuple;
 
 static ID: AtomicUsize = AtomicUsize::new(0);
 
@@ -95,6 +98,43 @@ impl Hit for Vec<Intersection> {
 	}
 }
 
+/// HitRecord stores some information relating to ray-shape intersections.
+pub struct HitRecord {
+	t: f64,
+	shape: Rc<Sphere>,
+	point: Tuple,
+	eye: Tuple,
+	normal: Tuple,
+	inside: bool,
+}
+
+impl HitRecord {
+	/// Returns a new [HitRecord] corresponding to the given intersection and ray.
+	pub fn new(intersection: &Intersection, ray: &Ray) -> Self {
+		let t = intersection.t;
+		let shape = Rc::clone(&intersection.shape);
+		let point = ray.at(t);
+		let eye = -ray.direction();
+
+		let mut normal = shape.normal_at(point);
+		let inside = if normal.dot(eye) < 0.0 {
+			normal = -normal;
+			true
+		} else {
+			false
+		};
+
+		Self {
+			t,
+			shape,
+			point,
+			eye,
+			normal,
+			inside,
+		}
+	}
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;
@@ -143,5 +183,33 @@ mod tests {
 		is.sort_unstable_by(|a, b| a.partial_cmp(b).unwrap());
 		let i = is.hit().unwrap();
 		assert_eq!(i, &i4);
+	}
+
+	#[test]
+	fn hit_record_outside() {
+		let ray = Ray::new(Tuple::point(0.0, 0.0, -5.0), Tuple::vector(0.0, 0.0, 1.0));
+		let shape = Sphere::new();
+		let intersection = Intersection::new(4.0, Rc::new(shape));
+		let rec = HitRecord::new(&intersection, &ray);
+
+		assert_eq!(rec.t, intersection.t);
+		assert_eq!(rec.point, Tuple::point(0.0, 0.0, -1.0));
+		assert_eq!(rec.eye, Tuple::vector(0.0, 0.0, -1.0));
+		assert_eq!(rec.normal, Tuple::vector(0.0, 0.0, -1.0));
+		assert!(!rec.inside);
+	}
+
+	#[test]
+	fn hit_record_inside() {
+		let ray = Ray::new(Tuple::point(0.0, 0.0, 0.0), Tuple::vector(0.0, 0.0, 1.0));
+		let shape = Sphere::new();
+		let intersection = Intersection::new(1.0, Rc::new(shape));
+		let rec = HitRecord::new(&intersection, &ray);
+
+		assert_eq!(rec.t, intersection.t);
+		assert_eq!(rec.point, Tuple::point(0.0, 0.0, 1.0));
+		assert_eq!(rec.eye, Tuple::vector(0.0, 0.0, -1.0));
+		assert_eq!(rec.normal, Tuple::vector(0.0, 0.0, -1.0));
+		assert!(rec.inside);
 	}
 }
