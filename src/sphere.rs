@@ -147,6 +147,85 @@ impl Sphere {
 		]
 	}
 
+	/// Returns the surface normal of `self` at `point`.
+	///
+	/// # Examples
+	///
+	/// The normal on a sphere at a point on the X axis.
+	/// ```
+	/// # use rtc::sphere::Sphere;
+	/// use rtc::tuple::Tuple;
+	///
+	/// let sphere = Sphere::new();
+	/// let normal = sphere.normal_at(Tuple::point(1.0, 0.0, 0.0));
+	/// assert_eq!(normal, Tuple::vector(1.0, 0.0, 0.0));
+	/// ```
+	///
+	/// The normal on a sphere at a point on the Y axis.
+	/// ```
+	/// # use rtc::sphere::Sphere;
+	/// use rtc::tuple::Tuple;
+	///
+	/// let sphere = Sphere::new();
+	/// let normal = sphere.normal_at(Tuple::point(0.0, 1.0, 0.0));
+	/// assert_eq!(normal, Tuple::vector(0.0, 1.0, 0.0));
+	/// ```
+	///
+	/// The normal on a sphere at a point on the Z axis.
+	/// ```
+	/// # use rtc::sphere::Sphere;
+	/// use rtc::tuple::Tuple;
+	///
+	/// let sphere = Sphere::new();
+	/// let normal = sphere.normal_at(Tuple::point(0.0, 0.0, 1.0));
+	/// assert_eq!(normal, Tuple::vector(0.0, 0.0, 1.0));
+	/// ```
+	///
+	/// The normal on a sphere at a point on the non-axial point.
+	/// ```
+	/// # use rtc::sphere::Sphere;
+	/// use rtc::tuple::Tuple;
+	///
+	/// let sphere = Sphere::new();
+	/// let normal = sphere.normal_at(Tuple::point(
+	///     (3.0 as f64).sqrt() / 3.0,
+	///     (3.0 as f64).sqrt() / 3.0,
+	///     (3.0 as f64).sqrt() / 3.0,
+	/// ));
+	/// assert_eq!(normal, Tuple::vector(
+	///     (3.0 as f64).sqrt() / 3.0,
+	///     (3.0 as f64).sqrt() / 3.0,
+	///     (3.0 as f64).sqrt() / 3.0,
+	/// ));
+	/// ```
+	///
+	/// The normal on a translated sphere:
+	/// ```
+	/// # use rtc::sphere::Sphere;
+	/// use rtc::tuple::Tuple;
+	/// use rtc::matrix::Matrix;
+	///
+	/// let mut sphere = Sphere::new();
+	/// sphere.set_transform(Matrix::translation(0.0, 1.0, 0.0));
+	/// let normal = sphere.normal_at(Tuple::point(
+	///     0.0,
+	///     (2.0 as f64).sqrt() / 2.0 + 1.0,
+	///     -(2.0 as f64).sqrt() / 2.0,
+	/// ));
+	/// // normal == Tuple::vector(
+	/// //     0.0,
+	/// //     (2.0 as f64).sqrt() / 2.0,
+	/// //     -(2.0 as f64).sqrt() / 2.0,
+	/// // ); // approx
+	/// ```
+	pub fn normal_at(&self, point: Tuple) -> Tuple {
+		let point = &self.transform_inverse * point;
+		let normal = point - Tuple::point(0.0, 0.0, 0.0);
+		let normal = &self.transform_inverse.transpose() * normal;
+		let normal = Tuple::vector(normal.x(), normal.y(), normal.z());
+		normal.normalized()
+	}
+
 	/// Sets `self`'s transform to be `transform`.
 	pub fn set_transform(&mut self, transform: Matrix) {
 		self.transform_inverse = transform.inverse();
