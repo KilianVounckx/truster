@@ -114,6 +114,15 @@
 //! assert_eq!(v2.cross(v1), Tuple::vector(1.0, -2.0, 1.0));
 //! ```
 //!
+//! - Reflection (v.reflect(v) -> v)
+//! ```
+//! # use rtc::tuple::Tuple;
+//! let v = Tuple::vector(1.0, -1.0, 0.0);
+//! let n = Tuple::vector(0.0, 1.0, 0.0);
+//! let r = v.reflect(n);
+//! assert_eq!(r, Tuple::vector(1.0, 1.0, 0.0));
+//! ```
+//!
 //! ## Normalization
 //!
 //! When working with vectors (so not points), you can take the norm of vectors and normalize them.
@@ -232,6 +241,11 @@ impl Tuple {
 	/// module's documentation for examples. Only works for vectors, not points.
 	pub fn normalize(&mut self) {
 		*self /= self.norm();
+	}
+
+	/// Reflects `self` along `normal`
+	pub fn reflect(self, normal: Self) -> Self {
+		self - normal * 2.0 * self.dot(normal)
 	}
 }
 
