@@ -28,7 +28,7 @@ impl Intersection {
 	pub fn new(t: f64, shape: Rc<Sphere>) -> Self {
 		Self {
 			t,
-			shape: Rc::clone(&shape),
+			shape,
 			id: ID.fetch_add(1, AtomicOrdering::SeqCst),
 		}
 	}
@@ -98,7 +98,9 @@ impl Hit for Vec<Intersection> {
 	}
 }
 
-/// HitRecord stores some information relating to ray-shape intersections.
+/// HitRecord stores some information relating to ray-shape intersections. Cloning is near constant
+/// time and memory.
+#[derive(Clone)]
 pub struct HitRecord {
 	t: f64,
 	shape: Rc<Sphere>,
@@ -132,6 +134,26 @@ impl HitRecord {
 			normal,
 			inside,
 		}
+	}
+
+	/// Returns the shape `self` is holding.
+	pub fn shape(&self) -> Rc<Sphere> {
+		Rc::clone(&self.shape)
+	}
+
+	/// Returns the point `self` is holding.
+	pub fn point(&self) -> Tuple {
+		self.point
+	}
+
+	/// Returns the normal `self` is holding.
+	pub fn normal(&self) -> Tuple {
+		self.normal
+	}
+
+	/// Returns the eye `self` is holding.
+	pub fn eye(&self) -> Tuple {
+		self.eye
 	}
 }
 
