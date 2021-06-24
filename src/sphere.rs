@@ -1,11 +1,14 @@
 //! Holds the [Sphere] struct;
 
+use std::rc::Rc;
+
+use crate::intersection::Intersection;
 use crate::matrix::Matrix;
 use crate::ray::Ray;
 use crate::tuple::Tuple;
 
 /// A 3D ellipsoid (spheroid).
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct Sphere {
 	transform: Matrix,
 	transform_inverse: Matrix,
@@ -119,7 +122,7 @@ impl Sphere {
 	/// let intersections = sphere.intersect(&ray);
 	/// assert_eq!(intersections.len(), 0);
 	/// ```
-	pub fn intersect(&self, ray: &Ray) -> Vec<f64> {
+	pub fn intersect(&self, ray: &Ray) -> Vec<Intersection> {
 		let ray = ray.transform(&self.transform_inverse);
 
 		let oc = ray.origin() - Tuple::point(0.0, 0.0, 0.0);
@@ -138,7 +141,10 @@ impl Sphere {
 		let t1 = (-b - sqrtd) / a;
 		let t2 = (-b + sqrtd) / a;
 
-		vec![t1, t2]
+		vec![
+			Intersection::new(t1, Rc::new(self.clone())),
+			Intersection::new(t2, Rc::new(self.clone())),
+		]
 	}
 
 	/// Sets `self`'s transform to be `transform`.
