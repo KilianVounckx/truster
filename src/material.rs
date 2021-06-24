@@ -3,6 +3,7 @@
 use crate::color::Color;
 
 /// Material with lighting properties. Give it to a shape to change its appearance.
+#[derive(Clone)]
 pub struct Material {
 	pub color: Color,
 	pub ambient: f64,
