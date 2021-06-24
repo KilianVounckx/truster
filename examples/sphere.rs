@@ -1,6 +1,8 @@
 use rtc::canvas::Canvas;
 use rtc::color::Color;
 use rtc::intersection::Hit;
+use rtc::light::PointLight;
+use rtc::material::Material;
 use rtc::matrix::Matrix;
 use rtc::ray::Ray;
 use rtc::sphere::Sphere;
@@ -16,11 +18,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let half = wall_size / 2.0;
 
 	let mut canvas = Canvas::new(canvas_pixels, canvas_pixels);
-	let color = Color::new(1.0, 0.0, 0.0);
 	let mut shape = Sphere::new();
 	shape.set_transform(
 		Matrix::shearing(1.0, 0.0, 0.0, 0.0, 0.0, 0.0) * &Matrix::scaling(0.5, 1.0, 1.0),
 	);
+	shape.set_material(Material {
+		color: Color::new(1.0, 0.2, 1.0),
+		..Material::default()
+	});
+
+	let light = PointLight::new(Tuple::point(-10.0, 10.0, -10.0), Color::new(1.0, 1.0, 1.0));
 
 	for y in (0..canvas_pixels).rev() {
 		let world_y = half - pixel_size * y as f64;
@@ -33,7 +40,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 			let ray = Ray::new(ray_origin, (position - ray_origin).normalized());
 			let intersections = shape.intersect(&ray);
 
-			if intersections.hit() != None {
+			if let Some(hit) = intersections.hit() {
+				let point = ray.at(hit.t());
+				let normal = hit.shape().normal_at(point);
+				let eye = -ray.direction();
+
+				let color = hit.shape().material().lighting(&light, point, eye, normal);
+
 				canvas[[x, y]] = color;
 			}
 		}
