@@ -1,14 +1,19 @@
 //! Holds the [Sphere] struct;
 
+use crate::matrix::Matrix;
 use crate::ray::Ray;
 use crate::tuple::Tuple;
 
-/// A unit sphere centered at the origin.
+/// A 3D ellipsoid (spheroid).
 #[derive(Default)]
-pub struct Sphere;
+pub struct Sphere {
+	transform: Matrix,
+	transform_inverse: Matrix,
+}
 
 impl Sphere {
-	/// Returns a new sphere.
+	/// Returns a new sphere with radius 1, centered at the origin.
+	/// Use [Sphere::set_transform] to transform it.
 	pub fn new() -> Self {
 		Self::default()
 	}
@@ -84,7 +89,39 @@ impl Sphere {
 	/// assert_eq!(intersections[0], -6.0);
 	/// assert_eq!(intersections[1], -4.0);
 	/// ```
+	///
+	/// Intersecting a scaled sphere with a ray.
+	/// ```
+	/// # use rtc::sphere::Sphere;
+	/// use rtc::ray::Ray;
+	/// use rtc::tuple::Tuple;
+	/// use rtc::matrix::Matrix;
+	///
+	/// let ray = Ray::new(Tuple::point(0.0, 0.0, -5.0), Tuple::vector(0.0, 0.0, 1.0));
+	/// let mut sphere = Sphere::new();
+	/// sphere.set_transform(Matrix::scaling(2.0, 2.0, 2.0));
+	/// let intersections = sphere.intersect(&ray);
+	/// assert_eq!(intersections.len(), 2);
+	/// assert_eq!(intersections[0], 3.0);
+	/// assert_eq!(intersections[1], 7.0);
+	/// ```
+	///
+	/// Intersecting a translated sphere with a ray.
+	/// ```
+	/// # use rtc::sphere::Sphere;
+	/// use rtc::ray::Ray;
+	/// use rtc::tuple::Tuple;
+	/// use rtc::matrix::Matrix;
+	///
+	/// let ray = Ray::new(Tuple::point(0.0, 0.0, -5.0), Tuple::vector(0.0, 0.0, 1.0));
+	/// let mut sphere = Sphere::new();
+	/// sphere.set_transform(Matrix::translation(5.0, 0.0, 0.0));
+	/// let intersections = sphere.intersect(&ray);
+	/// assert_eq!(intersections.len(), 0);
+	/// ```
 	pub fn intersect(&self, ray: &Ray) -> Vec<f64> {
+		let ray = ray.transform(&self.transform_inverse);
+
 		let oc = ray.origin() - Tuple::point(0.0, 0.0, 0.0);
 
 		let a = ray.direction().norm_squared();
@@ -102,5 +139,21 @@ impl Sphere {
 		let t2 = (-b + sqrtd) / a;
 
 		vec![t1, t2]
+	}
+
+	/// Sets `self`'s transform to be `transform`.
+	pub fn set_transform(&mut self, transform: Matrix) {
+		self.transform_inverse = transform.inverse();
+		self.transform = transform;
+	}
+
+	/// Returns `self`'s transform.
+	pub fn transform(&self) -> &Matrix {
+		&self.transform
+	}
+
+	/// Returns `self`'s transform's inverse.
+	pub fn transform_inverse(&self) -> &Matrix {
+		&self.transform_inverse
 	}
 }
