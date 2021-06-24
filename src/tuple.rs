@@ -148,7 +148,8 @@ pub struct Tuple {
 }
 
 impl Tuple {
-	fn new(x: f64, y: f64, z: f64, w: f64) -> Self {
+	/// Returns a new tuple with the given components. You should use [point] and [tuple] instead.
+	pub fn new(x: f64, y: f64, z: f64, w: f64) -> Self {
 		Self { x, y, z, w }
 	}
 
@@ -175,6 +176,11 @@ impl Tuple {
 	/// Returns `self`s z coordinate.
 	pub fn z(&self) -> f64 {
 		self.z
+	}
+
+	/// Returns `self`s w coordinate.
+	pub fn w(&self) -> f64 {
+		self.w
 	}
 
 	/// Returns true if `self` represents a point, false otherwise.
