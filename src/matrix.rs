@@ -556,7 +556,24 @@ impl Mul<&Self> for Matrix {
 	type Output = Matrix;
 
 	fn mul(self, rhs: &Self) -> Self::Output {
-		let mut res = Self::Output::default();
+		let mut res = Matrix::default();
+		for row in 0..=3 {
+			for col in 0..=3 {
+				res[[row, col]] = self[[row, 0]] * rhs[[0, col]]
+					+ self[[row, 1]] * rhs[[1, col]]
+					+ self[[row, 2]] * rhs[[2, col]]
+					+ self[[row, 3]] * rhs[[3, col]];
+			}
+		}
+		res
+	}
+}
+
+impl Mul<Self> for &Matrix {
+	type Output = Matrix;
+
+	fn mul(self, rhs: Self) -> Self::Output {
+		let mut res = Matrix::default();
 		for row in 0..=3 {
 			for col in 0..=3 {
 				res[[row, col]] = self[[row, 0]] * rhs[[0, col]]

@@ -22,7 +22,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 		let theta = PI / 6.0;
 		let rotation = Matrix::rotation_z(i as f64 * theta);
 
-		let point = &(center.clone() * &rotation * &offset) * origin;
+		let point = &(&center * &rotation * &offset) * origin;
 
 		let x = point.x() as usize;
 		let y = canvas.height() - point.y() as usize - 1;
