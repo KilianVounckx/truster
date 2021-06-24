@@ -1,8 +1,10 @@
 //! Holds the [Ray] struct.
 
+use crate::matrix::Matrix;
 use crate::tuple::Tuple;
 
 /// A ray which can be used for calculating intersections with shapes to render 3D scenes.
+#[derive(Debug, PartialEq)]
 pub struct Ray {
 	origin: Tuple,
 	direction: Tuple,
@@ -40,5 +42,42 @@ impl Ray {
 	/// ```
 	pub fn at(&self, t: f64) -> Tuple {
 		self.origin + self.direction() * t
+	}
+
+	/// Returns a new ray where both origin and direction are `self`'s origin and direction
+	/// transformed by `transform`.
+	///
+	/// # Examples
+	///
+	/// Translating a ray:
+	/// ```
+	/// # use rtc::ray::Ray;
+	/// use rtc::tuple::Tuple;
+	/// use rtc::matrix::Matrix;
+	///
+	///	let ray = Ray::new(Tuple::point(1.0, 2.0, 3.0), Tuple::vector(0.0, 1.0, 0.0));
+	/// let transform = Matrix::translation(3.0, 4.0, 5.0);
+	/// let ray = ray.transform(&transform);
+	///
+	/// assert_eq!(ray, Ray::new(Tuple::point(4.0, 6.0, 8.0), Tuple::vector(0.0, 1.0, 0.0)));
+	/// ```
+	///
+	/// Scaling a ray:
+	/// ```
+	/// # use rtc::ray::Ray;
+	/// use rtc::tuple::Tuple;
+	/// use rtc::matrix::Matrix;
+	///
+	///	let ray = Ray::new(Tuple::point(1.0, 2.0, 3.0), Tuple::vector(0.0, 1.0, 0.0));
+	/// let transform = Matrix::scaling(2.0, 3.0, 4.0);
+	/// let ray = ray.transform(&transform);
+	///
+	/// assert_eq!(ray, Ray::new(Tuple::point(2.0, 6.0, 12.0), Tuple::vector(0.0, 3.0, 0.0)));
+	/// ```
+	pub fn transform(&self, transform: &Matrix) -> Self {
+		Self {
+			origin: transform * self.origin,
+			direction: transform * self.direction,
+		}
 	}
 }
