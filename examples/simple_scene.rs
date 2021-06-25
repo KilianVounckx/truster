@@ -80,8 +80,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	});
 	world.add_shape(Rc::new(left));
 
-	let light = PointLight::new(Tuple::point(-10.0, 10.0, -10.0), Color::new(1.0, 1.0, 1.0));
-	world.add_light(Rc::new(light));
+	let light1 = PointLight::new(Tuple::point(-10.0, 10.0, -10.0), Color::new(0.5, 0.5, 0.5));
+	world.add_light(Rc::new(light1));
+
+	let light2 = PointLight::new(Tuple::point(10.0, 10.0, -10.0), Color::new(0.5, 0.5, 0.5));
+	world.add_light(Rc::new(light2));
 
 	let camera = Camera::new(Config {
 		hsize: 1000,
