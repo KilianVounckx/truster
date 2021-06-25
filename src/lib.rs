@@ -1,3 +1,7 @@
+//! A ray tracing library based on the book
+//! [The Ray Tracer Challenge](https://pragprog.com/titles/jbtracer/the-ray-tracer-challenge/),
+//! by Jamis Buck.
+
 pub mod camera;
 pub mod canvas;
 pub mod color;
