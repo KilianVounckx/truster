@@ -81,10 +81,10 @@ impl Camera {
 	///
 	/// Constructing a ray through the center of the canvas
 	/// ```
-	/// # use rtc::camera::{Camera, Config};
+	/// # use truster::camera::{Camera, Config};
 	/// use std::f64::consts::PI;
-	/// use rtc::ray::Ray;
-	/// use rtc::tuple::Tuple;
+	/// use truster::ray::Ray;
+	/// use truster::tuple::Tuple;
 	///
 	/// let camera = Camera::new(Config {
 	///     hsize: 201,

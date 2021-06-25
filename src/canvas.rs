@@ -6,7 +6,7 @@
 //!
 //! A new (black) canvas can be created with new:
 //! ```
-//! # use rtc::canvas::Canvas;
+//! # use truster::canvas::Canvas;
 //! let canvas = Canvas::new(10, 20);
 //! assert_eq!(canvas.width(), 10);
 //! assert_eq!(canvas.height(), 20);
@@ -14,8 +14,8 @@
 //!
 //! Pixels can be accessed and mutated with indexing:
 //! ```
-//! # use rtc::canvas::Canvas;
-//! use rtc::color::Color;
+//! # use truster::canvas::Canvas;
+//! use truster::color::Color;
 //!
 //! let mut canvas = Canvas::new(10, 20);
 //! let red = Color::new(1.0, 0.0, 0.0);
@@ -25,8 +25,8 @@
 //!
 //! Save a canvas in PPM format with [Canvas::to_ppm]:
 //! ```
-//! # use rtc::canvas::Canvas;
-//! use rtc::color::Color;
+//! # use truster::canvas::Canvas;
+//! use truster::color::Color;
 //!
 //! use std::fs::File;
 //! use std::io::prelude::*;
@@ -74,53 +74,53 @@ use crate::color::Color;
 
 /// A 2D image. See the module's documentation for more information.
 pub struct Canvas {
-    pixels: Vec<Vec<Color>>,
+	pixels: Vec<Vec<Color>>,
 }
 
 impl Canvas {
-    /// Creates a new canvas with the given width and height. The new canvas is entirely black.
-    pub fn new(width: usize, height: usize) -> Self {
-        Self {
-            pixels: vec![vec![Color::default(); width]; height],
-        }
-    }
+	/// Creates a new canvas with the given width and height. The new canvas is entirely black.
+	pub fn new(width: usize, height: usize) -> Self {
+		Self {
+			pixels: vec![vec![Color::default(); width]; height],
+		}
+	}
 
-    /// Returns `self`'s width, that is the number of columns in the image.
-    pub fn width(&self) -> usize {
-        if self.pixels.len() == 0 {
-            0
-        } else {
-            self.pixels[0].len()
-        }
-    }
+	/// Returns `self`'s width, that is the number of columns in the image.
+	pub fn width(&self) -> usize {
+		if self.pixels.len() == 0 {
+			0
+		} else {
+			self.pixels[0].len()
+		}
+	}
 
-    /// Returns `self`'s height, that is the number of rows in the image.
-    pub fn height(&self) -> usize {
-        self.pixels.len()
-    }
+	/// Returns `self`'s height, that is the number of rows in the image.
+	pub fn height(&self) -> usize {
+		self.pixels.len()
+	}
 
-    /// Writes `self` to `file` in PPM format. See the module's documentation for an example.
-    pub fn to_ppm(&self, file: &mut dyn Write) -> Result<(), Error> {
-        write!(file, "P3\n{} {}\n255\n", self.width(), self.height())?;
-        for row in self.pixels.iter() {
-            for color in row {
-                writeln!(file, "{}", color)?;
-            }
-        }
-        Ok(())
-    }
+	/// Writes `self` to `file` in PPM format. See the module's documentation for an example.
+	pub fn to_ppm(&self, file: &mut dyn Write) -> Result<(), Error> {
+		write!(file, "P3\n{} {}\n255\n", self.width(), self.height())?;
+		for row in self.pixels.iter() {
+			for color in row {
+				writeln!(file, "{}", color)?;
+			}
+		}
+		Ok(())
+	}
 }
 
 impl Index<[usize; 2]> for Canvas {
-    type Output = Color;
+	type Output = Color;
 
-    fn index(&self, index: [usize; 2]) -> &Self::Output {
-        &self.pixels[index[1]][index[0]]
-    }
+	fn index(&self, index: [usize; 2]) -> &Self::Output {
+		&self.pixels[index[1]][index[0]]
+	}
 }
 
 impl IndexMut<[usize; 2]> for Canvas {
-    fn index_mut(&mut self, index: [usize; 2]) -> &mut Self::Output {
-        &mut self.pixels[index[1]][index[0]]
-    }
+	fn index_mut(&mut self, index: [usize; 2]) -> &mut Self::Output {
+		&mut self.pixels[index[1]][index[0]]
+	}
 }

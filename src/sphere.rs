@@ -29,9 +29,9 @@ impl Sphere {
 	///
 	/// A ray intersects a sphere at two points.
 	/// ```
-	/// # use rtc::sphere::Sphere;
-	/// use rtc::ray::Ray;
-	/// use rtc::tuple::Tuple;
+	/// # use truster::sphere::Sphere;
+	/// use truster::ray::Ray;
+	/// use truster::tuple::Tuple;
 	///
 	/// let ray = Ray::new(Tuple::point(0.0, 0.0, -5.0), Tuple::vector(0.0, 0.0, 1.0));
 	/// let sphere = Sphere::new();
@@ -43,9 +43,9 @@ impl Sphere {
 	///
 	/// A ray intersects a sphere at a tangent.
 	/// ```
-	/// # use rtc::sphere::Sphere;
-	/// use rtc::ray::Ray;
-	/// use rtc::tuple::Tuple;
+	/// # use truster::sphere::Sphere;
+	/// use truster::ray::Ray;
+	/// use truster::tuple::Tuple;
 	///
 	/// let ray = Ray::new(Tuple::point(0.0, 1.0, -5.0), Tuple::vector(0.0, 0.0, 1.0));
 	/// let sphere = Sphere::new();
@@ -57,9 +57,9 @@ impl Sphere {
 	///
 	/// A ray misses a sphere.
 	/// ```
-	/// # use rtc::sphere::Sphere;
-	/// use rtc::ray::Ray;
-	/// use rtc::tuple::Tuple;
+	/// # use truster::sphere::Sphere;
+	/// use truster::ray::Ray;
+	/// use truster::tuple::Tuple;
 	///
 	/// let ray = Ray::new(Tuple::point(0.0, 2.0, -5.0), Tuple::vector(0.0, 0.0, 1.0));
 	/// let sphere = Sphere::new();
@@ -69,9 +69,9 @@ impl Sphere {
 	///
 	/// A ray originates inside a sphere.
 	/// ```
-	/// # use rtc::sphere::Sphere;
-	/// use rtc::ray::Ray;
-	/// use rtc::tuple::Tuple;
+	/// # use truster::sphere::Sphere;
+	/// use truster::ray::Ray;
+	/// use truster::tuple::Tuple;
 	///
 	/// let ray = Ray::new(Tuple::point(0.0, 0.0, 0.0), Tuple::vector(0.0, 0.0, 1.0));
 	/// let sphere = Sphere::new();
@@ -83,9 +83,9 @@ impl Sphere {
 	///
 	/// A ray is behind a sphere.
 	/// ```
-	/// # use rtc::sphere::Sphere;
-	/// use rtc::ray::Ray;
-	/// use rtc::tuple::Tuple;
+	/// # use truster::sphere::Sphere;
+	/// use truster::ray::Ray;
+	/// use truster::tuple::Tuple;
 	///
 	/// let ray = Ray::new(Tuple::point(0.0, 0.0, 5.0), Tuple::vector(0.0, 0.0, 1.0));
 	/// let sphere = Sphere::new();
@@ -97,10 +97,10 @@ impl Sphere {
 	///
 	/// Intersecting a scaled sphere with a ray.
 	/// ```
-	/// # use rtc::sphere::Sphere;
-	/// use rtc::ray::Ray;
-	/// use rtc::tuple::Tuple;
-	/// use rtc::matrix::Matrix;
+	/// # use truster::sphere::Sphere;
+	/// use truster::ray::Ray;
+	/// use truster::tuple::Tuple;
+	/// use truster::matrix::Matrix;
 	///
 	/// let ray = Ray::new(Tuple::point(0.0, 0.0, -5.0), Tuple::vector(0.0, 0.0, 1.0));
 	/// let mut sphere = Sphere::new();
@@ -113,10 +113,10 @@ impl Sphere {
 	///
 	/// Intersecting a translated sphere with a ray.
 	/// ```
-	/// # use rtc::sphere::Sphere;
-	/// use rtc::ray::Ray;
-	/// use rtc::tuple::Tuple;
-	/// use rtc::matrix::Matrix;
+	/// # use truster::sphere::Sphere;
+	/// use truster::ray::Ray;
+	/// use truster::tuple::Tuple;
+	/// use truster::matrix::Matrix;
 	///
 	/// let ray = Ray::new(Tuple::point(0.0, 0.0, -5.0), Tuple::vector(0.0, 0.0, 1.0));
 	/// let mut sphere = Sphere::new();
@@ -155,8 +155,8 @@ impl Sphere {
 	///
 	/// The normal on a sphere at a point on the X axis.
 	/// ```
-	/// # use rtc::sphere::Sphere;
-	/// use rtc::tuple::Tuple;
+	/// # use truster::sphere::Sphere;
+	/// use truster::tuple::Tuple;
 	///
 	/// let sphere = Sphere::new();
 	/// let normal = sphere.normal_at(Tuple::point(1.0, 0.0, 0.0));
@@ -165,8 +165,8 @@ impl Sphere {
 	///
 	/// The normal on a sphere at a point on the Y axis.
 	/// ```
-	/// # use rtc::sphere::Sphere;
-	/// use rtc::tuple::Tuple;
+	/// # use truster::sphere::Sphere;
+	/// use truster::tuple::Tuple;
 	///
 	/// let sphere = Sphere::new();
 	/// let normal = sphere.normal_at(Tuple::point(0.0, 1.0, 0.0));
@@ -175,8 +175,8 @@ impl Sphere {
 	///
 	/// The normal on a sphere at a point on the Z axis.
 	/// ```
-	/// # use rtc::sphere::Sphere;
-	/// use rtc::tuple::Tuple;
+	/// # use truster::sphere::Sphere;
+	/// use truster::tuple::Tuple;
 	///
 	/// let sphere = Sphere::new();
 	/// let normal = sphere.normal_at(Tuple::point(0.0, 0.0, 1.0));
@@ -185,8 +185,8 @@ impl Sphere {
 	///
 	/// The normal on a sphere at a point on the non-axial point.
 	/// ```
-	/// # use rtc::sphere::Sphere;
-	/// use rtc::tuple::Tuple;
+	/// # use truster::sphere::Sphere;
+	/// use truster::tuple::Tuple;
 	///
 	/// let sphere = Sphere::new();
 	/// let normal = sphere.normal_at(Tuple::point(
@@ -203,9 +203,9 @@ impl Sphere {
 	///
 	/// The normal on a translated sphere:
 	/// ```
-	/// # use rtc::sphere::Sphere;
-	/// use rtc::tuple::Tuple;
-	/// use rtc::matrix::Matrix;
+	/// # use truster::sphere::Sphere;
+	/// use truster::tuple::Tuple;
+	/// use truster::matrix::Matrix;
 	///
 	/// let mut sphere = Sphere::new();
 	/// sphere.set_transform(Matrix::translation(0.0, 1.0, 0.0));
