@@ -1,7 +1,12 @@
 [package]
-name = "rtc"
+name = "truster"
+description = "A ray tracing library based on the book 'The Ray Tracer Challenge' by Jamis Buck."
+homepage = "https://github.com/KilianVounckx/truster"
+repository = "https://github.com/KilianVounckx/truster"
 version = "0.1.0"
 edition = "2018"
+license = "MIT"
+keywords = ["ray-tracing", "graphics", "ray", "tracing"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
