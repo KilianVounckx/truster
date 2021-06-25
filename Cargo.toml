@@ -7,6 +7,9 @@ version = "0.1.0"
 edition = "2018"
 license = "MIT"
 keywords = ["ray-tracing", "graphics", "ray", "tracing"]
+exclude = [
+	"examples/*.png",
+]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
