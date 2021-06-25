@@ -45,7 +45,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 				let normal = hit.shape().normal_at(point);
 				let eye = -ray.direction();
 
-				let color = hit.shape().material().lighting(&light, point, eye, normal);
+				let color = hit
+					.shape()
+					.material()
+					.lighting(&light, point, eye, normal, false);
 
 				canvas[[x, y]] = color;
 			}
