@@ -3,10 +3,10 @@ name = "truster"
 description = "A ray tracing library based on the book 'The Ray Tracer Challenge' by Jamis Buck."
 homepage = "https://github.com/KilianVounckx/truster"
 repository = "https://github.com/KilianVounckx/truster"
-version = "0.3.2"
+version = "0.3.3"
 edition = "2018"
 license = "MIT"
-documentation = "https://doc.rs/truster"
+documentation = "https://docs.rs/truster"
 keywords = ["ray-tracing", "graphics", "ray", "tracing"]
 exclude = [
 	"examples/*.png",
