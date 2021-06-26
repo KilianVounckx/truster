@@ -12,7 +12,7 @@ See [examples](examples/) for how to use.
 - [x] Positionable camera
 - [x] Multiple light sources
 - [x] Shadows
-- [ ] Planes
+- [x] Planes
 - [ ] Textures
 - [ ] Reflection
 - [ ] Refraction
