@@ -6,6 +6,8 @@ use crate::matrix::Matrix;
 use crate::ray::Ray;
 use crate::tuple::Tuple;
 
+pub mod sphere;
+
 /// Represents a 3D shape with all methods to be able to render it, as well as methods for
 /// transforming it, and giving it a material.
 ///

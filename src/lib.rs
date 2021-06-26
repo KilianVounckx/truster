@@ -11,6 +11,5 @@ pub mod material;
 pub mod matrix;
 pub mod ray;
 pub mod shape;
-pub mod sphere;
 pub mod tuple;
 pub mod world;
