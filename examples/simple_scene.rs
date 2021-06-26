@@ -6,15 +6,14 @@ use truster::color::Color;
 use truster::light::PointLight;
 use truster::material::Material;
 use truster::matrix::Matrix;
-use truster::shape::{sphere::Sphere, Shape};
+use truster::shape::{plane::Plane, sphere::Sphere, Shape};
 use truster::tuple::Tuple;
 use truster::world::World;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let mut world = World::new();
 
-	let mut floor = Sphere::new();
-	floor.set_transform(Matrix::scaling(10.0, 0.01, 10.0));
+	let mut floor = Plane::new();
 	floor.set_material(Material {
 		color: Color::new(1.0, 0.9, 0.9),
 		specular: 0.0,
@@ -22,12 +21,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	});
 	world.add_shape(Rc::new(floor));
 
-	let mut left_wall = Sphere::new();
+	let mut left_wall = Plane::new();
 	left_wall.set_transform(
 		Matrix::translation(0.0, 0.0, 5.0)
 			* &Matrix::rotation_y(-PI / 4.0)
-			* &Matrix::rotation_x(PI / 2.0)
-			* &Matrix::scaling(10.0, 0.01, 10.0),
+			* &Matrix::rotation_x(PI / 2.0),
 	);
 	left_wall.set_material(Material {
 		color: Color::new(1.0, 0.9, 0.9),
@@ -36,12 +34,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	});
 	world.add_shape(Rc::new(left_wall));
 
-	let mut right_wall = Sphere::new();
+	let mut right_wall = Plane::new();
 	right_wall.set_transform(
 		Matrix::translation(0.0, 0.0, 5.0)
 			* &Matrix::rotation_y(PI / 4.0)
-			* &Matrix::rotation_x(PI / 2.0)
-			* &Matrix::scaling(10.0, 0.01, 10.0),
+			* &Matrix::rotation_x(PI / 2.0),
 	);
 	right_wall.set_material(Material {
 		color: Color::new(1.0, 0.9, 0.9),

@@ -6,7 +6,7 @@ use crate::color::Color;
 use crate::intersection::{Hit, HitRecord, Intersection};
 use crate::light::PointLight;
 use crate::ray::Ray;
-use crate::shape::{sphere::Sphere, Shape};
+use crate::shape::Shape;
 use crate::tuple::Tuple;
 
 /// A 3D world which has shapes and lights.
@@ -23,7 +23,7 @@ impl World {
 	}
 
 	/// Adds `shape` to `self`.
-	pub fn add_shape(&mut self, shape: Rc<Sphere>) {
+	pub fn add_shape(&mut self, shape: Rc<dyn Shape>) {
 		self.shapes.push(shape);
 	}
 
@@ -97,6 +97,7 @@ mod tests {
 	use crate::color::Color;
 	use crate::material::Material;
 	use crate::matrix::Matrix;
+	use crate::shape::sphere::Sphere;
 
 	fn test_world() -> World {
 		let light = PointLight::new(Tuple::point(-10.0, 10.0, -10.0), Color::new(1.0, 1.0, 1.0));
