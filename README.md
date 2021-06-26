@@ -11,7 +11,7 @@ See [examples](examples/) for how to use.
 - [x] Materials
 - [x] Positionable camera
 - [x] Multiple light sources
-- [ ] Shadows
+- [x] Shadows
 - [ ] Planes
 - [ ] Textures
 - [ ] Reflection
