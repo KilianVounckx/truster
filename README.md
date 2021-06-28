@@ -13,7 +13,7 @@ See [examples](examples/) for how to use.
 - [x] Multiple light sources
 - [x] Shadows
 - [x] Planes
-- [ ] Textures
+- [x] Textures
 - [ ] Reflection
 - [ ] Refraction
 - [ ] Cubes
