@@ -6,6 +6,7 @@ use crate::shape::Shape;
 use crate::tuple::Tuple;
 
 pub mod solid_color;
+pub mod stripe;
 
 /// A basic texture implementation. There is no UV mapping or anything like that. The method
 /// [Texture::color_at] should just map a point in 3D space to a color. Textures can be
