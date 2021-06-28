@@ -1,5 +1,7 @@
 //! Holds the [Texture] trait, as well as some common textures which implement it.
 
+use std::rc::Rc;
+
 use crate::color::Color;
 use crate::matrix::Matrix;
 use crate::shape::Shape;
@@ -16,7 +18,7 @@ pub mod stripe;
 /// [Texture::transform_inverse] should return it's inverse. [Texture::set_transform] should set
 /// the texture transform to be `transform`.
 pub trait Texture {
-	fn color_at_shape(&self, point: Tuple, shape: &dyn Shape) -> Color {
+	fn color_at_shape(&self, point: Tuple, shape: Rc<dyn Shape>) -> Color {
 		let point = shape.transform_inverse() * point;
 		let point = self.transform_inverse() * point;
 		self.color_at(point)
@@ -75,7 +77,7 @@ mod tests {
 		let mut shape = Sphere::new();
 		shape.set_transform(Matrix::scaling(2.0, 2.0, 2.0));
 		let texture = MockTexture::new();
-		let color = texture.color_at_shape(Tuple::point(2.0, 3.0, 4.0), &shape);
+		let color = texture.color_at_shape(Tuple::point(2.0, 3.0, 4.0), Rc::new(shape));
 		assert_eq!(color, Color::new(1.0, 1.5, 2.0));
 	}
 
@@ -84,7 +86,7 @@ mod tests {
 		let shape = Sphere::new();
 		let mut texture = MockTexture::new();
 		texture.set_transform(Matrix::scaling(2.0, 2.0, 2.0));
-		let color = texture.color_at_shape(Tuple::point(2.0, 3.0, 4.0), &shape);
+		let color = texture.color_at_shape(Tuple::point(2.0, 3.0, 4.0), Rc::new(shape));
 		assert_eq!(color, Color::new(1.0, 1.5, 2.0));
 	}
 
@@ -94,7 +96,7 @@ mod tests {
 		shape.set_transform(Matrix::scaling(2.0, 2.0, 2.0));
 		let mut texture = MockTexture::new();
 		texture.set_transform(Matrix::translation(0.5, 1.0, 1.5));
-		let color = texture.color_at_shape(Tuple::point(2.5, 3.0, 3.5), &shape);
+		let color = texture.color_at_shape(Tuple::point(2.5, 3.0, 3.5), Rc::new(shape));
 		assert_eq!(color, Color::new(0.75, 0.5, 0.25));
 	}
 }

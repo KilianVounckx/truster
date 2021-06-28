@@ -29,6 +29,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 		texture: Rc::new(SolidColor::new(Color::new(1.0, 0.2, 1.0))),
 		..Material::default()
 	});
+	let shape: Rc<dyn Shape> = Rc::new(shape);
 
 	let light = PointLight::new(Tuple::point(-10.0, 10.0, -10.0), Color::new(1.0, 1.0, 1.0));
 
@@ -48,10 +49,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 				let normal = hit.shape().normal_at(point);
 				let eye = -ray.direction();
 
-				let color = hit
-					.shape()
-					.material()
-					.lighting(&light, point, eye, normal, false);
+				let color = hit.shape().material().lighting(
+					Rc::clone(&shape),
+					&light,
+					point,
+					eye,
+					normal,
+					false,
+				);
 
 				canvas[[x, y]] = color;
 			}

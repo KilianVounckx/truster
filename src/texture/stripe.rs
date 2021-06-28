@@ -9,7 +9,7 @@ use crate::tuple::Tuple;
 use super::{solid_color::SolidColor, Texture};
 
 /// Combines 2 other textures and lies them out in stripes. The stripes are perpendicular to the
-/// z axis.
+/// x axis.
 pub struct Stripe {
 	texture1: Rc<dyn Texture>,
 	texture2: Rc<dyn Texture>,

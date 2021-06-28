@@ -4,6 +4,7 @@ use std::rc::Rc;
 
 use crate::color::Color;
 use crate::light::PointLight;
+use crate::shape::Shape;
 use crate::texture::{solid_color::SolidColor, Texture};
 use crate::tuple::Tuple;
 
@@ -24,13 +25,14 @@ impl Material {
 	/// `in_shadow` should be true if `position` is in a shadow of `light`.
 	pub fn lighting(
 		&self,
+		shape: Rc<dyn Shape>,
 		light: &PointLight,
 		position: Tuple,
 		eye: Tuple,
 		normal: Tuple,
 		in_shadow: bool,
 	) -> Color {
-		let color = self.texture.color_at(position) * light.color();
+		let color = self.texture.color_at_shape(position, Rc::clone(&shape)) * light.color();
 		let lightv = (light.position() - position).normalized();
 		let ambient = color * self.ambient;
 		let light_dot_normal = lightv.dot(normal);
@@ -69,9 +71,12 @@ impl Default for Material {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::shape::sphere::Sphere;
 
 	#[test]
 	fn lighting_eye_between_light_and_surface() {
+		let shape: Rc<dyn Shape> = Rc::new(Sphere::new());
+
 		let material = Material::default();
 		let position = Tuple::point(0.0, 0.0, 0.0);
 
@@ -79,12 +84,14 @@ mod tests {
 		let normal = Tuple::vector(0.0, 0.0, -1.0);
 		let light = PointLight::new(Tuple::point(0.0, 0.0, -10.0), Color::new(1.0, 1.0, 1.0));
 
-		let result = material.lighting(&light, position, eye, normal, false);
+		let result = material.lighting(shape, &light, position, eye, normal, false);
 		assert_eq!(result, Color::new(1.9, 1.9, 1.9));
 	}
 
 	#[test]
 	fn lighting_eye_between_light_and_surface_light_offset_45deg() {
+		let shape: Rc<dyn Shape> = Rc::new(Sphere::new());
+
 		let material = Material::default();
 		let position = Tuple::point(0.0, 0.0, 0.0);
 
@@ -92,12 +99,14 @@ mod tests {
 		let normal = Tuple::vector(0.0, 0.0, -1.0);
 		let light = PointLight::new(Tuple::point(0.0, 0.0, -10.0), Color::new(1.0, 1.0, 1.0));
 
-		let result = material.lighting(&light, position, eye, normal, false);
+		let result = material.lighting(shape, &light, position, eye, normal, false);
 		assert_eq!(result, Color::new(1.0, 1.0, 1.0));
 	}
 
 	#[test]
 	fn lighting_eye_opposite_surface_light_offset_45deg() {
+		let shape: Rc<dyn Shape> = Rc::new(Sphere::new());
+
 		let material = Material::default();
 		let position = Tuple::point(0.0, 0.0, 0.0);
 
@@ -105,7 +114,7 @@ mod tests {
 		let normal = Tuple::vector(0.0, 0.0, -1.0);
 		let light = PointLight::new(Tuple::point(0.0, 10.0, -10.0), Color::new(1.0, 1.0, 1.0));
 
-		let result = material.lighting(&light, position, eye, normal, false);
+		let result = material.lighting(shape, &light, position, eye, normal, false);
 		assert_eq!(
 			result,
 			Color::new(0.7363961030678927, 0.7363961030678927, 0.7363961030678927)
@@ -114,6 +123,8 @@ mod tests {
 
 	#[test]
 	fn lighting_eye_in_path_reflector() {
+		let shape: Rc<dyn Shape> = Rc::new(Sphere::new());
+
 		let material = Material::default();
 		let position = Tuple::point(0.0, 0.0, 0.0);
 
@@ -121,7 +132,7 @@ mod tests {
 		let normal = Tuple::vector(0.0, 0.0, -1.0);
 		let light = PointLight::new(Tuple::point(0.0, 10.0, -10.0), Color::new(1.0, 1.0, 1.0));
 
-		let result = material.lighting(&light, position, eye, normal, false);
+		let result = material.lighting(shape, &light, position, eye, normal, false);
 		assert_eq!(
 			result,
 			Color::new(1.6363961030678928, 1.6363961030678928, 1.6363961030678928)
@@ -130,6 +141,8 @@ mod tests {
 
 	#[test]
 	fn lighting_light_behind_surface() {
+		let shape: Rc<dyn Shape> = Rc::new(Sphere::new());
+
 		let material = Material::default();
 		let position = Tuple::point(0.0, 0.0, 0.0);
 
@@ -137,12 +150,14 @@ mod tests {
 		let normal = Tuple::vector(0.0, 0.0, -1.0);
 		let light = PointLight::new(Tuple::point(0.0, 0.0, 10.0), Color::new(1.0, 1.0, 1.0));
 
-		let result = material.lighting(&light, position, eye, normal, false);
+		let result = material.lighting(shape, &light, position, eye, normal, false);
 		assert_eq!(result, Color::new(0.1, 0.1, 0.1));
 	}
 
 	#[test]
 	fn lighting_surface_in_shadow() {
+		let shape: Rc<dyn Shape> = Rc::new(Sphere::new());
+
 		let material = Material::default();
 		let position = Tuple::point(0.0, 0.0, 0.0);
 
@@ -150,7 +165,7 @@ mod tests {
 		let normal = Tuple::vector(0.0, 0.0, -1.0);
 		let light = PointLight::new(Tuple::point(0.0, 0.0, -10.0), Color::new(1.0, 1.0, 1.0));
 
-		let result = material.lighting(&light, position, eye, normal, true);
+		let result = material.lighting(shape, &light, position, eye, normal, true);
 		assert_eq!(result, Color::new(0.1, 0.1, 0.1));
 	}
 }

@@ -48,6 +48,7 @@ impl World {
 	/// index `light_index` where the only one.
 	pub fn shade_hit(&self, light_index: usize, rec: HitRecord) -> Color {
 		rec.shape().material().lighting(
+			Rc::clone(&rec.shape()),
 			&self.lights[light_index],
 			rec.point(),
 			rec.eye(),
