@@ -133,6 +133,7 @@ mod tests {
 	use crate::light::PointLight;
 	use crate::material::Material;
 	use crate::shape::{sphere::Sphere, Shape};
+	use crate::texture::solid_color::SolidColor;
 	use std::rc::Rc;
 
 	#[test]
@@ -177,7 +178,7 @@ mod tests {
 
 		let mut sphere1 = Sphere::new();
 		sphere1.set_material(Material {
-			color: Color::new(0.8, 1.0, 0.6),
+			texture: Rc::new(SolidColor::new(Color::new(0.8, 1.0, 0.6))),
 			diffuse: 0.7,
 			specular: 0.2,
 			..Material::default()

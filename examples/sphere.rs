@@ -1,3 +1,5 @@
+use std::rc::Rc;
+
 use truster::canvas::Canvas;
 use truster::color::Color;
 use truster::intersection::Hit;
@@ -6,6 +8,7 @@ use truster::material::Material;
 use truster::matrix::Matrix;
 use truster::ray::Ray;
 use truster::shape::{sphere::Sphere, Shape};
+use truster::texture::solid_color::SolidColor;
 use truster::tuple::Tuple;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -23,7 +26,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 		Matrix::shearing(1.0, 0.0, 0.0, 0.0, 0.0, 0.0) * &Matrix::scaling(0.5, 1.0, 1.0),
 	);
 	shape.set_material(Material {
-		color: Color::new(1.0, 0.2, 1.0),
+		texture: Rc::new(SolidColor::new(Color::new(1.0, 0.2, 1.0))),
 		..Material::default()
 	});
 

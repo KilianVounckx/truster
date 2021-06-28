@@ -98,13 +98,14 @@ mod tests {
 	use crate::material::Material;
 	use crate::matrix::Matrix;
 	use crate::shape::sphere::Sphere;
+	use crate::texture::solid_color::SolidColor;
 
 	fn test_world() -> World {
 		let light = PointLight::new(Tuple::point(-10.0, 10.0, -10.0), Color::new(1.0, 1.0, 1.0));
 
 		let mut sphere1 = Sphere::new();
 		sphere1.set_material(Material {
-			color: Color::new(0.8, 1.0, 0.6),
+			texture: Rc::new(SolidColor::new(Color::new(0.8, 1.0, 0.6))),
 			diffuse: 0.7,
 			specular: 0.2,
 			..Material::default()

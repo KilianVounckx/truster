@@ -7,6 +7,7 @@ use truster::light::PointLight;
 use truster::material::Material;
 use truster::matrix::Matrix;
 use truster::shape::{plane::Plane, sphere::Sphere, Shape};
+use truster::texture::solid_color::SolidColor;
 use truster::tuple::Tuple;
 use truster::world::World;
 
@@ -15,7 +16,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 	let mut floor = Plane::new();
 	floor.set_material(Material {
-		color: Color::new(1.0, 0.9, 0.9),
+		texture: Rc::new(SolidColor::new(Color::new(1.0, 0.9, 0.9))),
 		specular: 0.0,
 		..Material::default()
 	});
@@ -28,7 +29,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 			* &Matrix::rotation_x(PI / 2.0),
 	);
 	left_wall.set_material(Material {
-		color: Color::new(1.0, 0.9, 0.9),
+		texture: Rc::new(SolidColor::new(Color::new(1.0, 0.9, 0.9))),
 		specular: 0.0,
 		..Material::default()
 	});
@@ -41,7 +42,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 			* &Matrix::rotation_x(PI / 2.0),
 	);
 	right_wall.set_material(Material {
-		color: Color::new(1.0, 0.9, 0.9),
+		texture: Rc::new(SolidColor::new(Color::new(1.0, 0.9, 0.9))),
 		specular: 0.0,
 		..Material::default()
 	});
@@ -50,7 +51,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let mut middle = Sphere::new();
 	middle.set_transform(Matrix::translation(-0.5, 1.0, 0.5));
 	middle.set_material(Material {
-		color: Color::new(0.1, 1.0, 0.5),
+		texture: Rc::new(SolidColor::new(Color::new(0.1, 1.0, 0.5))),
 		diffuse: 0.7,
 		specular: 0.3,
 		..Material::default()
@@ -60,7 +61,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let mut right = Sphere::new();
 	right.set_transform(Matrix::translation(1.5, 0.5, -0.5) * &Matrix::scaling(0.5, 0.5, 0.5));
 	right.set_material(Material {
-		color: Color::new(0.5, 1.0, 0.1),
+		texture: Rc::new(SolidColor::new(Color::new(0.5, 1.0, 0.1))),
 		diffuse: 0.7,
 		specular: 0.3,
 		..Material::default()
@@ -70,7 +71,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let mut left = Sphere::new();
 	left.set_transform(Matrix::translation(-1.5, 0.33, -0.75) * &Matrix::scaling(0.33, 0.33, 0.33));
 	left.set_material(Material {
-		color: Color::new(1.0, 0.7, 0.1),
+		texture: Rc::new(SolidColor::new(Color::new(1.0, 0.7, 0.1))),
 		diffuse: 0.7,
 		specular: 0.3,
 		..Material::default()
